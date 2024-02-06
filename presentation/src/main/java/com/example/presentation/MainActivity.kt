@@ -3,9 +3,8 @@ package com.example.presentation
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.presentation.addevent.AddEventActivity
+import com.example.presentation.ui.AllRatesActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -13,6 +12,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        startActivity(Intent(this, AddEventActivity::class.java))
+        startActivity(Intent(this, AllRatesActivity::class.java))
     }
 }

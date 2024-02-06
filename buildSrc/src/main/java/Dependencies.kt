@@ -24,6 +24,25 @@ object Libraries {
     // DAGGER HILT
     const val hiltAndroid = "com.google.dagger:hilt-android:${Versions.hilt}"
     const val hiltCompiler = "com.google.dagger:hilt-android-compiler:${Versions.hilt}"
+
+    // RETROFIT
+    const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
+    const val converterGson = "com.squareup.retrofit2:converter-gson:${Versions.retrofit}"
+
+    // OkHttp
+    const val okhttp = "com.squareup.okhttp3:okhttp:${Versions.okHttp}"
+    const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:${Versions.okHttp}"
+
+    // viewModel delegate
+    const val fragmentVmDelegate = "androidx.fragment:fragment-ktx:${Versions.fragmentVmDelegate}"
+    const val activityVmDelegate = "androidx.activity:activity-ktx:${Versions.activityVmDelegate}"
+    const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.viewModelKtx}"
+
+    // Glide
+    const val glide = "com.github.bumptech.glide:glide:${Versions.glide}"
+
+    // viewBinding delegate
+    const val viewBindingNoReflection = "com.github.kirich1409:viewbindingpropertydelegate-noreflection:${Versions.viewBindingNoReflectionglide}"
 }
 
 object Modules {

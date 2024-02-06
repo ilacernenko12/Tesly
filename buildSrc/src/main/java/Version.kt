@@ -8,4 +8,11 @@ object Versions {
     const val espresso = "3.5.1"
     const val room = "2.6.0"
     const val hilt = "2.44"
+    const val retrofit = "2.9.0"
+    const val okHttp = "4.9.1"
+    const val fragmentVmDelegate = "1.6.1"
+    const val activityVmDelegate = "1.8.0"
+    const val viewModelKtx = "2.6.2"
+    const val glide = "4.16.0"
+    const val viewBindingNoReflectionglide = "1.5.9"
 }

@@ -3,7 +3,7 @@
 
     <application>
         <activity
-            android:name=".addevent.AddEventActivity"
+            android:name=".ui.AllRatesActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
