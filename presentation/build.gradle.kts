@@ -39,14 +39,12 @@ android {
 }
 
 dependencies {
+    implementation(project(Modules.domain))
+
     implementation(AndroidLibraries.coreKtx)
     implementation(AndroidLibraries.appCompat)
     implementation(AndroidLibraries.material)
     implementation(AndroidLibraries.constraintlayout)
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation(project(mapOf("path" to ":domain")))
     testImplementation(TestLibraries.jUnit)
     androidTestImplementation(TestLibraries.jUnitExt)
     androidTestImplementation(TestLibraries.espresso)

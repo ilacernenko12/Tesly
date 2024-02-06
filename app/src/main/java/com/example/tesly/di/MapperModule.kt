@@ -1,7 +1,6 @@
 package com.example.tesly.di
 
 import com.example.data.mapper.CurrencyDataMapper
-import com.example.domain.mapper.CurrencyDomainMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,9 +16,9 @@ object MapperModule {
         return CurrencyDataMapper()
     }
 
-    @Provides
+    /*@Provides
     @Singleton
     fun provideCurrencyDomainMapper(): CurrencyDomainMapper{
         return CurrencyDomainMapper()
-    }
+    }*/
 }

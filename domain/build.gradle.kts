@@ -35,8 +35,6 @@ android {
 }
 
 dependencies {
-    implementation(project(Modules.presentation))
-
     implementation(AndroidLibraries.coreKtx)
     implementation(AndroidLibraries.appCompat)
     implementation(AndroidLibraries.material)

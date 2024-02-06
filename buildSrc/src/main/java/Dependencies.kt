@@ -42,7 +42,7 @@ object Libraries {
     const val glide = "com.github.bumptech.glide:glide:${Versions.glide}"
 
     // viewBinding delegate
-    const val viewBindingNoReflection = "com.github.kirich1409:viewbindingpropertydelegate-noreflection:${Versions.viewBindingNoReflectionglide}"
+    const val viewBindingNoReflection = "com.github.kirich1409:viewbindingpropertydelegate-noreflection:${Versions.viewBindingNoReflectionGlide}"
 }
 
 object Modules {

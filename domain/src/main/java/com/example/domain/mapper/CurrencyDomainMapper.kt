@@ -1,3 +1,4 @@
+/*
 package com.example.domain.mapper
 
 import com.example.domain.model.RateModel
@@ -14,4 +15,4 @@ class CurrencyDomainMapper: Mapper<RateModel, RateUIModel> {
     override fun mapToModel(type: RateUIModel): RateModel {
         TODO("Not yet implemented")
     }
-}
+}*/

@@ -1,17 +1,13 @@
 package com.example.domain.usecase
 
-import com.example.domain.mapper.CurrencyDomainMapper
+import com.example.domain.model.RateModel
 import com.example.domain.repository.CurrencyRepository
-import com.example.presentation.model.RateUIModel
 import javax.inject.Inject
 
 class GetAllRatesUseCase @Inject constructor(
-    private val repository: CurrencyRepository,
-    private val mapper: CurrencyDomainMapper
+    private val repository: CurrencyRepository
 ) {
-    suspend fun getCurrentRates(): List<RateUIModel> {
-      return repository.getCurrentRates().map { rateModel ->
-          mapper.mapFromModel(rateModel)
-      }
+    suspend fun getCurrentRates(): List<RateModel> {
+      return repository.getCurrentRates()
     }
 }
