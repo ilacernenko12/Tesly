@@ -10,11 +10,14 @@ class AllRatesViewHolder(private val binding: RateItemBinding): RecyclerView.Vie
         binding.apply {
             vTvCurrencyName.text = rate.name
             vTvRateToday.text = rate.officialRate
+            vTvRateDifference.text = rate.difference
+            vTvRateDifference.setTextColor(rate.color)
+
 
             vTvCurrencyName.post {
                 val height = vTvCurrencyName.height
                 vTvRateToday.layoutParams.height = height
-                vTvRatePrevios.layoutParams.height = height
+                vTvRateDifference.layoutParams.height = height
             }
         }
     }

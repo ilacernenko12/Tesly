@@ -15,4 +15,10 @@ class CurrencyRepositoryImpl @Inject constructor(
             mapper.mapFromEntity(rateResponse)
         }
     }
+
+    override suspend fun getYesterdayRates(date: String): List<RateModel> {
+        return api.getYesterdayRates(date = date).map { rateResponse ->
+            mapper.mapFromEntity(rateResponse)
+        }
+    }
 }

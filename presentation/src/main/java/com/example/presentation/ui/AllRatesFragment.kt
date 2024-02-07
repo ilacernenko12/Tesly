@@ -5,19 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.viewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.presentation.MainActivity
 import com.example.presentation.R
 import com.example.presentation.databinding.FragmentAllRatesBinding
-import com.example.presentation.model.RateUIModel
 import com.example.presentation.util.gone
 import com.example.presentation.util.visible
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
-import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
@@ -46,7 +42,7 @@ class AllRatesFragment : Fragment() {
         initAdapter()
 
         // получаем данные из вью модели
-        observeAllRates()
+        observeRatesData()
 
         // обработчики нажатий
         setListeners()
@@ -68,7 +64,7 @@ class AllRatesFragment : Fragment() {
         binding.vBtnUpdate.setOnClickListener {
             visible(binding.vPbLoading)
             updateCurrentDate()
-            observeAllRates()
+            observeRatesData()
         }
     }
     private fun initAdapter() {
@@ -76,9 +72,9 @@ class AllRatesFragment : Fragment() {
         binding.recyclerView.adapter = adapter
     }
 
-    private fun observeAllRates() {
+    private fun observeRatesData() {
         visible(binding.vPbLoading)
-        viewModel.allRates.observe(viewLifecycleOwner) { rates ->
+        viewModel.ratesData.observe(viewLifecycleOwner) { rates ->
             gone(binding.vPbLoading)
             adapter.updateRates(rates)
         }
@@ -92,12 +88,5 @@ class AllRatesFragment : Fragment() {
     // Текущая дата
     private fun getCurrentDate(): String {
         return simpleDateFormat.format(Date()).replace('/', '.')
-    }
-
-    // Дата вчерашнего дня
-    private fun getYesterdayDate(): String {
-        val calendar = Calendar.getInstance()
-        calendar.add(Calendar.DAY_OF_YEAR, -1)
-        return simpleDateFormat.format(calendar.time).replace('/', '.')
     }
 }
