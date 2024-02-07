@@ -8,7 +8,7 @@ class CurrencyUiMapper: Mapper<RateModel, RateUIModel> {
     override fun mapFromModel(type: RateModel): RateUIModel {
         return RateUIModel(
             name = type.name,
-            officialRate = type.officialRate
+            officialRate = type.officialRate.toString()
         )
     }
 
