@@ -1,4 +1,4 @@
-package com.example.domain.mapper
+package com.example.presentation.mapper
 
 interface Mapper<Model, UiObject> {
     fun mapFromModel(type: Model): UiObject
