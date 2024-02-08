@@ -3,7 +3,7 @@ package com.example.tesly.di
 import android.app.Application
 import android.content.Context
 import com.example.presentation.mapper.CurrencyUiMapper
-import com.example.presentation.util.FlagUrlProvider
+import com.example.presentation.mapper.FlagUiMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,13 +22,13 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideFlagUrlProvider(context: Context): FlagUrlProvider {
-        return FlagUrlProvider(context)
+    fun provideFlagUiMapper(): FlagUiMapper {
+        return FlagUiMapper()
     }
 
     @Provides
     @Singleton
-    fun provideCurrencyUiMapper(flagUrlProvider: FlagUrlProvider): CurrencyUiMapper {
-        return CurrencyUiMapper(flagUrlProvider)
+    fun provideCurrencyUiMapper(): CurrencyUiMapper {
+        return CurrencyUiMapper()
     }
 }

@@ -12,6 +12,7 @@ import com.example.presentation.MainActivity
 import com.example.presentation.R
 import com.example.presentation.databinding.FragmentAllRatesBinding
 import com.example.presentation.model.RateUIModel
+import com.example.presentation.model.TableUIData
 import com.example.presentation.util.UIState
 import com.example.presentation.util.gone
 import com.example.presentation.util.setOnSafeClickListener
@@ -106,7 +107,7 @@ class AllRatesFragment : Fragment() {
         gone(binding.recyclerView)
     }
 
-    private fun showRates(rates: List<RateUIModel>) {
+    private fun showRates(rates: List<TableUIData>) {
         // Скрываем прогресс-бар или другой индикатор загрузки
         gone(binding.vPbLoading)
         visible(binding.recyclerView)

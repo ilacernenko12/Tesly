@@ -5,9 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.presentation.databinding.RateItemBinding
 import com.example.presentation.model.RateUIModel
+import com.example.presentation.model.TableUIData
 
 class AllRatesAdapter: RecyclerView.Adapter<AllRatesViewHolder>() {
-    private var rates: List<RateUIModel> = emptyList()
+    private var rates: List<TableUIData> = emptyList()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AllRatesViewHolder {
         val binding = RateItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return AllRatesViewHolder(binding)
@@ -22,7 +23,7 @@ class AllRatesAdapter: RecyclerView.Adapter<AllRatesViewHolder>() {
         return rates.size
     }
 
-    fun updateRates(newRates: List<RateUIModel>) {
+    fun updateRates(newRates: List<TableUIData>) {
         rates = newRates
         notifyDataSetChanged()
     }
