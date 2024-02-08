@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.presentation.MainActivity
 import com.example.presentation.R
@@ -13,6 +14,7 @@ import com.example.presentation.databinding.FragmentAllRatesBinding
 import com.example.presentation.util.gone
 import com.example.presentation.util.visible
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -74,9 +76,11 @@ class AllRatesFragment : Fragment() {
 
     private fun observeRatesData() {
         visible(binding.vPbLoading)
-        viewModel.ratesData.observe(viewLifecycleOwner) { rates ->
-            gone(binding.vPbLoading)
-            adapter.updateRates(rates)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.ratesData.collect { rates ->
+                binding.vPbLoading.visibility = View.GONE
+                adapter.updateRates(rates)
+            }
         }
     }
 
