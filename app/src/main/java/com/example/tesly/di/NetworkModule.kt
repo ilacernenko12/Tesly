@@ -1,6 +1,6 @@
 package com.example.tesly.di
 
-import com.example.data.mapper.CurrencyDataMapper
+import com.example.data.mapper.CurrencyNetworkMapper
 import com.example.data.mapper.FlagDataMapper
 import com.example.data.remote.CurrencyApi
 import com.example.data.repository.CurrencyRepositoryImpl
@@ -10,9 +10,6 @@ import com.example.domain.repository.CurrencyRepository
 import com.example.domain.repository.FlagRepository
 import com.example.domain.usecase.GetAllRatesUseCase
 import com.example.domain.usecase.GetFlagUseCase
-import com.example.presentation.mapper.CurrencyUiMapper
-import com.example.presentation.mapper.FlagUiMapper
-import com.example.presentation.ui.rates.AllRatesViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -62,7 +59,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideCurrencyRepository(api: CurrencyApi): CurrencyRepository {
-        return CurrencyRepositoryImpl(mapper = CurrencyDataMapper(), api = api)
+        return CurrencyRepositoryImpl(mapper = CurrencyNetworkMapper(), api = api)
     }
 
     @Provides

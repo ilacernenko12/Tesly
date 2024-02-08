@@ -3,9 +3,11 @@ package com.example.presentation.ui.rates
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.usecase.GetAllRatesUseCase
+import com.example.domain.usecase.GetDataFromDatabaseUseCase
 import com.example.domain.usecase.GetFlagUseCase
 import com.example.presentation.mapper.CurrencyUiMapper
 import com.example.presentation.mapper.FlagUiMapper
+import com.example.presentation.mapper.TableUiMapper
 import com.example.presentation.model.FlagUIModel
 import com.example.presentation.model.TableUIData
 import com.example.presentation.util.UIState
@@ -23,8 +25,10 @@ import javax.inject.Inject
 class AllRatesViewModel @Inject constructor(
     private val rateUseCase: GetAllRatesUseCase,
     private val flagUseCase: GetFlagUseCase,
+    private val databaseUseCase: GetDataFromDatabaseUseCase,
     private val currencyMapper: CurrencyUiMapper,
-    private val flagMapper: FlagUiMapper
+    private val flagMapper: FlagUiMapper,
+    private val tableUiMapper: TableUiMapper
 ) : ViewModel() {
 
     // состояние экрана
@@ -37,7 +41,7 @@ class AllRatesViewModel @Inject constructor(
         loadData()
     }
 
-    private fun loadData(){
+    private fun loadData() {
         _uiState.value = UIState.Loading // Показываем прогресс-бар при начале загрузки
 
         viewModelScope.launch {
@@ -70,6 +74,16 @@ class AllRatesViewModel @Inject constructor(
                                             flags = flagMapper.mapFromModel(flagModel)
                                         )
                                     )
+
+                                    databaseUseCase.insertRatesData(
+                                        tableUiMapper.mapToModel(
+                                            TableUIData(
+                                                rates = currencyMapper.mapFromModel(mergedRate)
+                                                    .copy(),
+                                                flags = flagMapper.mapFromModel(flagModel)
+                                            )
+                                        )
+                                    )
                                 }
                             } else {
                                 // В случае, если аббревиатура "XDR", не отправляем запрос
@@ -83,6 +97,15 @@ class AllRatesViewModel @Inject constructor(
                                         flags = FlagUIModel(flagUrl = "")
                                     )
                                 )
+                                databaseUseCase.insertRatesData(
+                                    tableUiMapper.mapToModel(
+                                        TableUIData(
+                                            rates = currencyMapper.mapFromModel(mergedRate)
+                                                .copy(),
+                                            flags = FlagUIModel(flagUrl = "")
+                                        )
+                                    )
+                                )
                             }
                         }
 
@@ -94,6 +117,7 @@ class AllRatesViewModel @Inject constructor(
             }
         }
     }
+
     // Дата вчерашнего дня
     private fun getYesterdayDate(): String {
         val calendar = Calendar.getInstance()

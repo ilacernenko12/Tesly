@@ -76,15 +76,6 @@ class AllRatesFragment : Fragment() {
         // Устанавливаем LayoutManager и адаптер для RecyclerView
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
-
-        // Получаем высоту экрана
-        val displayMetrics = resources.displayMetrics
-        val screenHeight = displayMetrics.heightPixels
-
-        // Устанавливаем высоту RecyclerView от начальной точки до низа экрана
-        val layoutParams = binding.recyclerView.layoutParams
-        layoutParams.height = screenHeight - binding.recyclerView.y.toInt() // Разница между высотой экрана и y-координатой начальной точки RecyclerView
-        binding.recyclerView.layoutParams = layoutParams
     }
 
 

@@ -57,4 +57,11 @@ dependencies {
     implementation(Libraries.converterGson)
     implementation(Libraries.okhttp)
     implementation(Libraries.loggingInterceptor)
+
+    implementation(Libraries.roomCompiler) {
+        exclude(group = "com.intellij", module = "annotations")
+    }
+
+    implementation(Libraries.roomKtx)
+    implementation(Libraries.roomRuntime)
 }

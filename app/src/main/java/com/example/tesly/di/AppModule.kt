@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import com.example.presentation.mapper.CurrencyUiMapper
 import com.example.presentation.mapper.FlagUiMapper
+import com.example.presentation.mapper.TableUiMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,5 +31,11 @@ object AppModule {
     @Singleton
     fun provideCurrencyUiMapper(): CurrencyUiMapper {
         return CurrencyUiMapper()
+    }
+
+    @Provides
+    @Singleton
+    fun provideTableUiMapper(): TableUiMapper {
+        return TableUiMapper()
     }
 }

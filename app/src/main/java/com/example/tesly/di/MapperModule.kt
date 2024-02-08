@@ -1,6 +1,6 @@
 package com.example.tesly.di
 
-import com.example.data.mapper.CurrencyDataMapper
+import com.example.data.mapper.CurrencyNetworkMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,8 +12,8 @@ import javax.inject.Singleton
 object MapperModule {
     @Provides
     @Singleton
-    fun provideCurrencyDataMapper(): CurrencyDataMapper {
-        return CurrencyDataMapper()
+    fun provideCurrencyDataMapper(): CurrencyNetworkMapper {
+        return CurrencyNetworkMapper()
     }
 
     /*@Provides
