@@ -57,4 +57,6 @@ dependencies {
     implementation(Libraries.activityVmDelegate)
 
     implementation(Libraries.viewBindingNoReflection)
+
+    implementation(Libraries.glide)
 }

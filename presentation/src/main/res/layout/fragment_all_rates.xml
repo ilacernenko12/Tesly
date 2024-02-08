@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    tools:context=".ui.AllRatesFragment">
+    tools:context=".ui.rates.AllRatesFragment">
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/vBtnBack"
@@ -43,14 +43,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/vTvLayoutDescription" />
 
+    <View
+        android:id="@+id/vTvDevider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="20dp"
+        android:background="#7B1E3C"
+        app:layout_constraintTop_toBottomOf="@+id/vBtnUpdate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/vBtnUpdate" />
+        app:layout_constraintTop_toBottomOf="@+id/vTvDevider" />
 
     <ProgressBar
         android:id="@+id/vPbLoading"

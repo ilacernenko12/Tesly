@@ -11,10 +11,10 @@ class CurrencyUiMapper@Inject constructor(private val flagUrlProvider: FlagUrlPr
         val color = if (type.difference > 0) Color.GREEN else Color.RED
         val differenceSign = if (type.difference > 0) "+" else ""
         val formattedDifference = "$differenceSign${"%.4f".format(type.difference)}"
-        val flagUrl = type.abbreviation.lowercase()
+        val flagUrl = flagUrlProvider.getFlagUrl((type.abbreviation))
 
         return RateUIModel(
-            flag = flagUrl,
+            flag = type.abbreviation,
             name = type.name,
             officialRate = type.officialRate.toString(),
             difference = formattedDifference,

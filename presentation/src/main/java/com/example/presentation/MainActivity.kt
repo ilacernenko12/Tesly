@@ -1,13 +1,10 @@
 package com.example.presentation
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.presentation.databinding.ActivityMainBinding
-import com.example.presentation.ui.AllRatesFragment
+import com.example.presentation.ui.rates.AllRatesFragment
 import com.example.presentation.util.gone
 import com.example.presentation.util.visible
 import dagger.hilt.android.AndroidEntryPoint

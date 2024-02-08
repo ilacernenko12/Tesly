@@ -1,4 +1,4 @@
-package com.example.presentation.ui
+package com.example.presentation.ui.rates
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

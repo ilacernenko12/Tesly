@@ -1,9 +1,7 @@
-package com.example.presentation.ui
+package com.example.presentation.ui.rates
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.model.RateModel
 import com.example.domain.usecase.GetAllRatesUseCase
 import com.example.presentation.mapper.CurrencyUiMapper
 import com.example.presentation.model.RateUIModel
@@ -12,7 +10,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
