@@ -1,5 +1,6 @@
 package com.example.data.remote
 
+import com.example.data.remote.model.RateResponse
 import com.example.data.util.Constants.ON_DATE_PARAM
 import com.example.data.util.Constants.PERIODICITY_PARAM
 import com.example.data.util.Constants.RATES_ENDPOINT

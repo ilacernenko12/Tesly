@@ -11,7 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.presentation.MainActivity
 import com.example.presentation.R
 import com.example.presentation.databinding.FragmentAllRatesBinding
+import com.example.presentation.model.RateUIModel
+import com.example.presentation.util.UIState
 import com.example.presentation.util.gone
+import com.example.presentation.util.setOnSafeClickListener
 import com.example.presentation.util.visible
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -63,8 +66,7 @@ class AllRatesFragment : Fragment() {
         }
 
         // Устанавливаем слушатель кликов на кнопку
-        binding.vBtnUpdate.setOnClickListener {
-            visible(binding.vPbLoading)
+        binding.vBtnUpdate.setOnSafeClickListener {
             updateCurrentDate()
             observeRatesData()
         }
@@ -75,13 +77,36 @@ class AllRatesFragment : Fragment() {
     }
 
     private fun observeRatesData() {
-        visible(binding.vPbLoading)
+
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.ratesData.collect { rates ->
-                binding.vPbLoading.visibility = View.GONE
-                adapter.updateRates(rates)
+            viewModel.uiState.collect { state ->
+                when (state) {
+                    is UIState.Loading -> showLoading()
+                    is UIState.Success -> showRates(state.rates)
+                    is UIState.Error -> showError()
+                    else -> {}
+                }
             }
         }
+    }
+
+    private fun showLoading() {
+        visible(binding.vPbLoading)
+        gone(binding.recyclerView)
+    }
+
+    private fun showRates(rates: List<RateUIModel>) {
+        // Скрываем прогресс-бар или другой индикатор загрузки
+        gone(binding.vPbLoading)
+        visible(binding.recyclerView)
+        // Обновляем адаптер с полученными данными
+        adapter.updateRates(rates)
+    }
+
+
+    private fun showError() {
+        // Показываем сообщение об ошибке или экран заглушку
+        // Здесь можно использовать Snackbar, Toast или другие средства
     }
 
     // Функция обновления даты

@@ -3,6 +3,7 @@ package com.example.presentation.model
 import android.graphics.Color
 
 data class RateUIModel(
+    val flag: String = "",
     val name: String,
     val officialRate: String,
     val difference: String = "",

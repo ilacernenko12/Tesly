@@ -1,6 +1,5 @@
 package com.example.presentation.ui
 
-import android.view.ViewTreeObserver
 import androidx.recyclerview.widget.RecyclerView
 import com.example.presentation.databinding.RateItemBinding
 import com.example.presentation.model.RateUIModel
