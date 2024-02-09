@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun hideActivityElements() {
+    fun hideActivityElements() {
         with(binding) {
             gone(vTvAppPreview)
             gone(vBtnCurrencyRates)

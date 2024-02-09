@@ -1,6 +1,7 @@
 package com.example.presentation.ui.rates
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,12 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.presentation.MainActivity
 import com.example.presentation.R
 import com.example.presentation.databinding.FragmentAllRatesBinding
-import com.example.presentation.model.RateUIModel
 import com.example.presentation.model.TableUIData
 import com.example.presentation.util.UIState
 import com.example.presentation.util.gone
 import com.example.presentation.util.setOnSafeClickListener
 import com.example.presentation.util.visible
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -47,16 +48,26 @@ class AllRatesFragment : Fragment() {
         // инициализируем адаптер
         initAdapter()
 
-        // получаем данные из вью модели
-        observeRatesData()
+        // подписка на UIState - любое обновление данных приходит сюда
+        observeUiState()
 
         // обработчики нажатий
         setListeners()
     }
 
+    // логика - слать запрос в сеть один раз, дальше брать из кэша
+    override fun onResume() {
+        super.onResume()
+        viewModel.checkCacheAndRefresh()
+
+        // чтобы во время сворачивания приложения
+        // или в меню запущенных не были видны элементы активити
+        (activity as? MainActivity)?.hideActivityElements()
+    }
+
     // при возврате на активити восстановим видимость элементов
-    override fun onPause() {
-        super.onPause()
+    override fun onStop() {
+        super.onStop()
         (activity as? MainActivity)?.showActivityElements()
     }
 
@@ -69,7 +80,7 @@ class AllRatesFragment : Fragment() {
         // Устанавливаем слушатель кликов на кнопку
         binding.vBtnUpdate.setOnSafeClickListener {
             updateCurrentDate()
-            observeRatesData()
+            viewModel.checkCacheAndRefresh()
         }
     }
     private fun initAdapter() {
@@ -78,14 +89,13 @@ class AllRatesFragment : Fragment() {
         binding.recyclerView.adapter = adapter
     }
 
-
-    private fun observeRatesData() {
-
+    // обновляем UI исходя из state запроса в сеть/БД
+    private fun observeUiState() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
                 when (state) {
                     is UIState.Loading -> showLoading()
-                    is UIState.Success -> showRates(state.rates)
+                    is UIState.Success -> render(state.rates)
                     is UIState.Error -> showError()
                     else -> {}
                 }
@@ -98,18 +108,20 @@ class AllRatesFragment : Fragment() {
         gone(binding.recyclerView)
     }
 
-    private fun showRates(rates: List<TableUIData>) {
-        // Скрываем прогресс-бар или другой индикатор загрузки
-        gone(binding.vPbLoading)
-        visible(binding.recyclerView)
+    private fun render(rates: List<TableUIData>) {
+        visible(binding.vPbLoading)
+        gone(binding.recyclerView)
+
         // Обновляем адаптер с полученными данными
         adapter.updateRates(rates)
+
+        gone(binding.vPbLoading)
+        visible(binding.recyclerView)
     }
 
 
     private fun showError() {
-        // Показываем сообщение об ошибке или экран заглушку
-        // Здесь можно использовать Snackbar, Toast или другие средства
+        Snackbar.make(requireContext(), binding.fragmentAllRates, "Ошибка запроса", Snackbar.LENGTH_LONG).show()
     }
 
     // Функция обновления даты

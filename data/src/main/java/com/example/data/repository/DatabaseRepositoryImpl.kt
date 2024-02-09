@@ -12,12 +12,12 @@ class DatabaseRepositoryImpl @Inject constructor(
     private val dao: RatesDao,
     private val mapper: DatabaseMapper
 ): DatabaseRepository {
-    override suspend fun insertRatesData(data: RatesStorageModel) {
-        dao.insertRatesData(mapper.mapToEntity(data))
+    override suspend fun insertRatesData(data: List<RatesStorageModel>) {
+        val entities = data.map { mapper.mapToEntity(it) }
+        dao.insertRatesData(entities)
     }
 
-    override suspend fun getAllRates() = flow {
-        val data = dao.getAllRates().map { mapper.mapFromEntity(it) }
-        emit(data)
+    override suspend fun getAllRates(): List<RatesStorageModel> {
+        return dao.getAllRates().map { mapper.mapFromEntity(it) }
     }
 }

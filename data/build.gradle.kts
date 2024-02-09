@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.data"
-    compileSdk = 33
+    compileSdk = Versions.compileSdkVersion
 
     defaultConfig {
         minSdk = 26
@@ -52,9 +52,7 @@ dependencies {
     implementation(Libraries.okhttp)
     implementation(Libraries.loggingInterceptor)
 
-    implementation(Libraries.roomCompiler) {
-        exclude(group = "com.intellij", module = "annotations")
-    }
+    kapt(Libraries.roomCompiler)
 
     implementation(Libraries.roomKtx)
     implementation(Libraries.roomRuntime)

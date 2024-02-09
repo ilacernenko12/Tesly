@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.SystemClock
 import android.view.View
 import androidx.fragment.app.Fragment
+import dagger.hilt.android.qualifiers.ApplicationContext
 
 // Время задержки между нажатиями (в миллисекундах)
 private const val DEFAULT_CLICK_DELAY = 2000L

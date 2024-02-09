@@ -8,9 +8,9 @@ import com.example.data.local.entity.RatesEntity
 
 @Dao
 interface RatesDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertRatesData(ratesEntity: RatesEntity)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertRatesData(ratesEntity: List<RatesEntity>)
 
     @Query("SELECT * FROM rates_entity")
-    suspend fun getAllRates(): List<RatesEntity>
+    fun getAllRates(): List<RatesEntity>
 }

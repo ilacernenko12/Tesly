@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = Application.id
-    compileSdk = 34
+    compileSdk = Versions.compileSdkVersion
 
     defaultConfig {
         applicationId = Application.id
@@ -58,9 +58,7 @@ dependencies {
     implementation(Libraries.okhttp)
     implementation(Libraries.loggingInterceptor)
 
-    implementation(Libraries.roomCompiler) {
-        exclude(group = "com.intellij", module = "annotations")
-    }
+    kapt(Libraries.roomCompiler)
 
     implementation(Libraries.roomKtx)
     implementation(Libraries.roomRuntime)

@@ -26,7 +26,8 @@ class TableUiMapper: Mapper<RatesStorageModel, TableUIData> {
             flagUrl = type.flags.flagUrl,
             name = type.rates.name,
             rate = type.rates.officialRate.toDouble(),
-            difference = type.rates.difference.toDouble()
+            difference = type.rates.difference.toDouble(),
+            color = type.rates.color
         )
     }
 }

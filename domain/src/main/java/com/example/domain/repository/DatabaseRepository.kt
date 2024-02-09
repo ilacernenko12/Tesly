@@ -4,7 +4,7 @@ import com.example.domain.model.RatesStorageModel
 import kotlinx.coroutines.flow.Flow
 
 interface DatabaseRepository {
-    suspend fun insertRatesData(data: RatesStorageModel)
+    suspend fun insertRatesData(data: List<RatesStorageModel>)
 
-    suspend fun getAllRates(): Flow<List<RatesStorageModel>>
+    suspend fun getAllRates(): List<RatesStorageModel>
 }

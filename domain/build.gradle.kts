@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.domain"
-    compileSdk = 33
+    compileSdk = Versions.compileSdkVersion
 
     defaultConfig {
         minSdk = 26
