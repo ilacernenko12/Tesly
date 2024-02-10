@@ -14,7 +14,7 @@ interface CurrencyApi {
     suspend fun getCurrentRates(): List<RateResponse>
 
     @GET(RATES_ENDPOINT)
-    suspend fun getYesterdayRates(
+    suspend fun getRatesByDay(
         @Query(ON_DATE_PARAM) date: String,
         @Query(PERIODICITY_PARAM) periodicity: Int = 0
     ): List<RateResponse>

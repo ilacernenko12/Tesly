@@ -13,12 +13,12 @@ class GetAllRatesUseCase @Inject constructor(
         return repository.getCurrentRates()
     }
 
-    private suspend fun getYesterdayRates(date: String): Flow<List<RateModel>> {
-        return repository.getYesterdayRates(date)
+    private suspend fun getRatesByDay(date: String): Flow<List<RateModel>> {
+        return repository.getRatesByDay(date)
     }
 
     suspend fun getRateDifferences(date: String): Flow<List<RateModel>> {
-        return combine(getCurrentRates(), getYesterdayRates(date)) { currentRates, yesterdayRates ->
+        return combine(getCurrentRates(), getRatesByDay(date)) { currentRates, yesterdayRates ->
             currentRates.zip(yesterdayRates) { currentRate, yesterdayRate ->
                 val difference = currentRate.officialRate - yesterdayRate.officialRate
                 val formattedDifference = if (difference != 0.0) difference else 0.0

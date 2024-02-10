@@ -6,6 +6,7 @@ import com.example.domain.model.RateModel
 class CurrencyNetworkMapper: Mapper<RateResponse, RateModel> {
     override fun mapFromEntity(type: RateResponse): RateModel {
         return RateModel(
+            scale = type.scale,
             abbreviation = type.abbreviation,
             name = type.name,
             officialRate = type.officialRate

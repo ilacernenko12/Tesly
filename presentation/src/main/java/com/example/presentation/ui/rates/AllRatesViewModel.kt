@@ -38,7 +38,7 @@ class AllRatesViewModel @Inject constructor(
     private val tableUiMapper: TableUiMapper
 ) : ViewModel() {
 
-    // флоу используемый при первой загрузке
+    // флоу используемый для обновления данных на UI
     private val _uiState = MutableStateFlow<UIState>(UIState.Loading)
     val uiState: StateFlow<UIState> = _uiState
 

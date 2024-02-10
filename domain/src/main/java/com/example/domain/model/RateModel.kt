@@ -1,6 +1,7 @@
 package com.example.domain.model
 
 data class RateModel (
+    val scale: Int = 0,
     val abbreviation: String,
     val name: String,
     val officialRate: Double,

@@ -1,9 +1,11 @@
 package com.example.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.presentation.databinding.ActivityMainBinding
+import com.example.presentation.ui.cart.CurrencyCartFragment
 import com.example.presentation.ui.rates.AllRatesFragment
 import com.example.presentation.util.gone
 import com.example.presentation.util.visible
@@ -17,13 +19,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        binding.vBtnCurrencyRates.setOnClickListener {
-            hideActivityElements()
+        with(binding) {
+            vBtnCurrencyRates.setOnClickListener {
+                hideActivityElements()
+                showFragment(AllRatesFragment())
+            }
 
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, AllRatesFragment())
-                .addToBackStack(null)
-                .commit()
+            vBtnCurrencyCart.setOnClickListener {
+                hideActivityElements()
+                showFragment(CurrencyCartFragment())
+            }
         }
     }
 
@@ -43,5 +48,12 @@ class MainActivity : AppCompatActivity() {
             visible(vBtnCurrencyCart)
             visible(vBtnCurrencyChart)
         }
+    }
+
+    private fun showFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 }
