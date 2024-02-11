@@ -35,54 +35,61 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
         android:background="@drawable/table_border"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/vTvLayoutDescription">
 
-        <TextView
-            android:id="@+id/vTvOnDateLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="На дату"
-            android:textColor="@color/black"
-            android:textSize="8sp"
-            app:layout_constraintStart_toStartOf="parent" />
-
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/vTvDate"
+                android:id="@+id/vTvOnDateLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="21.02.2024"
-                android:textColor="@color/black" />
+                android:text="На дату"
+                android:textColor="@color/black"
+                android:textSize="8sp"
+                app:layout_constraintStart_toStartOf="parent" />
 
-            <ImageView
+            <LinearLayout
+                android:id="@+id/vVgCalendarLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="10dp"
-                android:src="@drawable/ic_calendar" />
+                android:orientation="horizontal">
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/vBtnShow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:background="#7B1E3C"
-                android:padding="14dp"
-                android:text="@string/refresh"
-                android:textColor="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/vTvLayoutDescription" />
+                <TextView
+                    android:id="@+id/vTvDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="@color/black" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/ic_calendar" />
+            </LinearLayout>
         </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/vBtnUpdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:background="#7B1E3C"
+            android:gravity="center"
+            android:padding="14dp"
+            android:text="@string/refresh"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/vTvLayoutDescription" />
     </LinearLayout>
 
     <TextView
@@ -96,23 +103,85 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/vgDateLayout" />
 
+    <LinearLayout
+        android:id="@+id/vVgTableHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/vTvInfo">
+
+        <TextView
+            android:id="@+id/vTvRateName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#7B1E3C"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Курс белорусского рубля"
+            android:textColor="@color/white"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/vTvOfficialRate"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#7B1E3C"
+            android:gravity="center"
+            android:minWidth="60dp"
+            android:padding="10dp"
+            android:text="Официальный курс"
+            android:textColor="@color/white"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/vTvDecemberDiff"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:minWidth="60dp"
+            android:background="#7B1E3C"
+            android:padding="10dp"
+            android:text="Изменения к 31 декабря 2023, процентов"
+            android:textColor="@color/white"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/vTvYesterdayDiff"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:minWidth="60dp"
+            android:background="#7B1E3C"
+            android:padding="10dp"
+            android:text="Изменения к предыдущему дню установления курсов, процентов"
+            android:textColor="@color/white"
+            android:textSize="10sp" />
+
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/vTvInfo" />
+        app:layout_constraintTop_toBottomOf="@+id/vVgTableHeader" />
 
     <ProgressBar
         android:id="@+id/vPbLoading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
         android:paddingStart="60dp"
         android:paddingEnd="60dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/vTvInfo" />
 </androidx.constraintlayout.widget.ConstraintLayout>

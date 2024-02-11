@@ -18,7 +18,7 @@
     <TextView
         android:id="@+id/vTvOfficialRate"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
         android:minWidth="60dp"
@@ -26,26 +26,51 @@
         android:textColor="@color/black"
         android:textSize="10sp" />
 
-    <TextView
-        android:id="@+id/vTvDecemberDiff"
+    <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:gravity="center"
-        android:minWidth="60dp"
-        android:padding="10dp"
-        android:textColor="@color/black"
-        android:textSize="10sp" />
+        android:gravity="center">
 
-    <TextView
-        android:id="@+id/vTvYesterdayDiff"
+        <TextView
+            android:id="@+id/vTvDecemberDiff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minWidth="60dp"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textSize="10sp" />
+
+        <ImageView
+            android:id="@+id/vIvDecemverStrength"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_strength_down" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:gravity="center"
-        android:minWidth="60dp"
-        android:padding="10dp"
-        android:text="+3.25302"
-        android:textColor="@color/black"
-        android:textSize="10sp" />
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/vTvYesterdayDiff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minWidth="60dp"
+            android:padding="10dp"
+            android:text="+3.25302"
+            android:textColor="@color/black"
+            android:textSize="10sp" />
+
+        <ImageView
+            android:id="@+id/vIvYesterdayStrength"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </LinearLayout>
 </LinearLayout>

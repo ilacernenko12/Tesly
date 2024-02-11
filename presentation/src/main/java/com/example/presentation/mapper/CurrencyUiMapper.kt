@@ -6,7 +6,7 @@ import com.example.presentation.model.RateUIModel
 
 class CurrencyUiMapper: Mapper<RateModel, RateUIModel> {
     override fun mapFromModel(type: RateModel): RateUIModel {
-        val color = if (type.difference > 0) Color.GREEN else Color.RED
+        val color = if (type.difference >= 0) Color.GREEN else Color.RED
         val differenceSign = if (type.difference > 0) "+" else ""
         val formattedDifference = "$differenceSign${"%.4f".format(type.difference)}"
 
