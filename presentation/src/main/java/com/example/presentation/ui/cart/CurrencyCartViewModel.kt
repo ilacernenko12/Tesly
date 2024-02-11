@@ -120,7 +120,8 @@ class CurrencyCartViewModel @Inject constructor(
                         isPositiveYesterdayDiff = currencyCart[2] > 0.0
                     )
                 )
-                _uiState.value = UIState.Success(uiData)
+
+                _uiState.value = UIState.Success(moveLastToFront(uiData))
 
             } catch (e: Exception) {
                 // В случае возникновения ошибки устанавливаем состояние ошибки
@@ -178,6 +179,14 @@ class CurrencyCartViewModel @Inject constructor(
         }
 
         return resultList
+    }
+
+    private fun moveLastToFront(list: MutableList<CartUiData>): MutableList<CartUiData> {
+        val lastElement = list.removeAt(list.size - 1)
+
+        // Добавляем его в начало списка
+        list.add(0, lastElement)
+        return list
     }
 
     private fun getPreviousDate(date: Date): String {
