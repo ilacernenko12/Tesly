@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.presentation.databinding.ActivityMainBinding
 import com.example.presentation.ui.cart.CurrencyCartFragment
+import com.example.presentation.ui.linechart.LineChartFragment
 import com.example.presentation.ui.rates.AllRatesFragment
 import com.example.presentation.util.gone
 import com.example.presentation.util.visible
@@ -28,6 +29,11 @@ class MainActivity : AppCompatActivity() {
             vBtnCurrencyCart.setOnClickListener {
                 hideActivityElements()
                 showFragment(CurrencyCartFragment())
+            }
+
+            vBtnCurrencyChart.setOnClickListener {
+                hideActivityElements()
+                showFragment(LineChartFragment())
             }
         }
     }
