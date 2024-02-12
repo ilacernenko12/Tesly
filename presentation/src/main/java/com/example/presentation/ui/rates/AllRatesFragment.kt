@@ -28,7 +28,7 @@ class AllRatesFragment : Fragment() {
     private lateinit var binding: FragmentAllRatesBinding
     private val viewModel: AllRatesViewModel by viewModels()
     private val adapter = AllRatesAdapter()
-    private val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    private val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -125,11 +125,6 @@ class AllRatesFragment : Fragment() {
 
     // Функция обновления даты
     private fun updateCurrentDate() {
-        binding.vTvLayoutDescription.text = getString(R.string.all_rates_description, getCurrentDate())
-    }
-
-    // Возвращают текущую дату в формате dd/mm/yyyy
-    private fun getCurrentDate(): String {
-        return simpleDateFormat.format(Date()).replace('/', '.')
+        binding.vTvLayoutDescription.text = getString(R.string.all_rates_description, simpleDateFormat.format(Date()))
     }
 }

@@ -1,7 +1,7 @@
 package com.example.tesly.di
 
 import com.example.data.mapper.CurrencyNetworkMapper
-import com.example.data.mapper.FlagDataMapper
+import com.example.data.mapper.FlagNetworkMapper
 import com.example.data.remote.CurrencyApi
 import com.example.data.repository.CurrencyRepositoryImpl
 import com.example.data.repository.FlagRepositoryImpl
@@ -71,7 +71,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideFlagRepository(api: CurrencyApi): FlagRepository {
-        return FlagRepositoryImpl(mapper = FlagDataMapper(), api = api)
+        return FlagRepositoryImpl(mapper = FlagNetworkMapper(), api = api)
     }
 
     @Provides

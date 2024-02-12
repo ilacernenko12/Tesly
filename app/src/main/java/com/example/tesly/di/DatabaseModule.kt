@@ -4,14 +4,10 @@ import android.content.Context
 import androidx.room.Room
 import com.example.data.local.AppDatabase
 import com.example.data.local.dao.RatesDao
-import com.example.data.mapper.CurrencyNetworkMapper
-import com.example.data.mapper.DatabaseMapper
-import com.example.data.remote.CurrencyApi
-import com.example.data.repository.CurrencyRepositoryImpl
+import com.example.data.mapper.CartDbMapper
+import com.example.data.mapper.RatesDbMapper
 import com.example.data.repository.DatabaseRepositoryImpl
-import com.example.domain.repository.CurrencyRepository
 import com.example.domain.repository.DatabaseRepository
-import com.example.domain.usecase.GetAllRatesUseCase
 import com.example.domain.usecase.GetDataFromDatabaseUseCase
 import dagger.Module
 import dagger.Provides
@@ -39,7 +35,7 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideDatabaseRepository(dao: RatesDao): DatabaseRepository {
-        return DatabaseRepositoryImpl(mapper = DatabaseMapper(), dao = dao)
+        return DatabaseRepositoryImpl(ratesMapper = RatesDbMapper(), cartMapper = CartDbMapper(), dao = dao)
     }
 
     @Provides

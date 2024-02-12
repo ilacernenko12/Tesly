@@ -1,6 +1,7 @@
 package com.example.tesly.di
 
 import com.example.data.mapper.CurrencyNetworkMapper
+import com.example.presentation.mapper.CartUiMapper
 import com.example.presentation.mapper.CurrencyUiMapper
 import com.example.presentation.mapper.FlagUiMapper
 import com.example.presentation.mapper.TableUiMapper
@@ -35,5 +36,11 @@ object MapperModule {
     @Singleton
     fun provideTableUiMapper(): TableUiMapper {
         return TableUiMapper()
+    }
+
+    @Provides
+    @Singleton
+    fun provideCartUiMapper(): CartUiMapper {
+        return CartUiMapper()
     }
 }

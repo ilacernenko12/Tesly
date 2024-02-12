@@ -3,6 +3,8 @@ package com.example.presentation.ui.cart
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.repository.CurrencyRepository
+import com.example.domain.usecase.GetDataFromDatabaseUseCase
+import com.example.presentation.mapper.CartUiMapper
 import com.example.presentation.model.CartUiData
 import com.example.presentation.util.UIState
 import com.example.presentation.util.roundTo
@@ -18,11 +20,12 @@ import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
 import kotlin.math.absoluteValue
-import kotlin.math.pow
 
 @HiltViewModel
 class CurrencyCartViewModel @Inject constructor(
-    private val repository: CurrencyRepository
+    private val repository: CurrencyRepository,
+    private val databaseUseCase: GetDataFromDatabaseUseCase,
+    private val mapper: CartUiMapper
 ) : ViewModel() {
 
     // флоу используемый для обновления данных на UI
@@ -38,7 +41,18 @@ class CurrencyCartViewModel @Inject constructor(
         const val CNY_ABBREVIATION = "CNY"
     }
 
-    fun updateData(date: Date) {
+    fun checkCacheAndRefresh(date: Date) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val isDataAvailable = databaseUseCase.isCartDataAvailable()
+            if (isDataAvailable) {
+                updateData()
+            } else {
+                loadData(date)
+            }
+        }
+    }
+
+    fun loadData(date: Date) {
         // Показываем прогресс-бар при начале загрузки
         _uiState.value = UIState.Loading
 
@@ -57,9 +71,9 @@ class CurrencyCartViewModel @Inject constructor(
 
                 val uiData = mutableListOf<CartUiData>()
 
-                val listOne = mutableListOf<Double>()
-                val listTwo = mutableListOf<Double>()
-                val listThree = mutableListOf<Double>()
+                val rateList = mutableListOf<Double>()
+                val decemberDiffList = mutableListOf<Double>()
+                val yesterdayDiffList = mutableListOf<Double>()
 
                 currentRates.collect { currentRatesList ->
                     decemberRates.collect { decemberRatesList ->
@@ -101,15 +115,15 @@ class CurrencyCartViewModel @Inject constructor(
                                         isPositiveYesterdayDiff = yesterdayDiff.toDouble() > 0.0
                                     )
                                     uiData.add(cartUiData)
-                                    listOne.add(currentRate.officialRate)
-                                    listTwo.add(decemberDiff.toDouble())
-                                    listThree.add(yesterdayDiff.toDouble())
+                                    rateList.add(currentRate.officialRate)
+                                    decemberDiffList.add(decemberDiff.toDouble())
+                                    yesterdayDiffList.add(yesterdayDiff.toDouble())
                                 }
                             }
                         }
                     }
                 }
-                val currencyCart = calculateGeometricMean(listOne, listTwo, listThree)
+                val currencyCart = calculateGeometricMean(uiData)
                 uiData.add(
                     CartUiData(
                         rateName = "Корзина валют",
@@ -122,7 +136,7 @@ class CurrencyCartViewModel @Inject constructor(
                 )
 
                 _uiState.value = UIState.Success(moveLastToFront(uiData))
-
+                saveToCache(uiData)
             } catch (e: Exception) {
                 // В случае возникновения ошибки устанавливаем состояние ошибки
                 _uiState.value = UIState.Error
@@ -130,55 +144,55 @@ class CurrencyCartViewModel @Inject constructor(
         }
     }
 
+    private fun updateData() {
+        // Показываем прогресс-бар при начале загрузки
+        _uiState.value = UIState.Loading
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val updatedData = databaseUseCase.getCartData().map {
+                    mapper.mapFromModel(it)
+                }
+                _uiState.value = UIState.Success(updatedData)
+            } catch (e: Exception) {
+                // В случае возникновения ошибки устанавливаем состояние ошибки
+                _uiState.value = UIState.Error
+            }
+        }
+    }
+
+    // сохранение данных полученных от сервера в БД
+    private fun saveToCache(mergedRates: List<CartUiData>){
+        viewModelScope.launch(Dispatchers.IO) {
+            val models = mergedRates.map { cartUiData ->
+                mapper.mapToModel(cartUiData)
+            }
+            databaseUseCase.insertCartData(models)
+        }
+    }
+
     private fun calculateGeometricMean(
-        listOne: List<Double>,
-        listTwo: List<Double>,
-        listThree: List<Double>
+        list: List<CartUiData>
     ): List<Double> {
+
         val resultList = mutableListOf<Double>()
 
-        // Проверяем, что размеры всех списков равны
-        require(listOne.size == listTwo.size && listTwo.size == listThree.size) { "Sizes of all lists must be equal" }
+        val column1Value = list.map { powerWithSign(it.officialRate.toDouble(), 0.6) }.reduce { acc, i -> acc * i }
+        val column2Value = list.map { powerWithSign(it.decemberDiff.toDouble(),0.3) }.reduce { acc, i -> acc * i }
+        val column3Value = list.map { powerWithSign(it.yesterdayDiff.toDouble(),0.1) }.reduce { acc, i -> acc * i }
 
-        // Проходим по всем индексам списков
-        for (i in listOne.indices) {
-            // Получаем текущие элементы из каждого списка
-            val elementOne = listOne[i]
-            val elementTwo = listTwo[i]
-            val elementThree = listThree[i]
-
-            // Возводим каждый элемент в указанную степень
-            val poweredElementOne = if (elementOne >= 0) {
-                Math.pow(elementOne, 0.6).roundTo(2)
-            } else {
-                -Math.pow(elementOne.absoluteValue, 0.6).roundTo(2)
-            }
-
-            val poweredElementTwo = if (elementTwo >= 0) {
-                Math.pow(elementTwo, 0.3).roundTo(2)
-            } else {
-                -Math.pow(elementTwo.absoluteValue, 0.3).roundTo(2)
-            }
-
-            val poweredElementThree = if (elementThree >= 0) {
-                Math.pow(elementThree, 0.1).roundTo(2)
-            } else {
-                -Math.pow(elementThree.absoluteValue, 0.1).roundTo(2)
-            }
-
-
-            // Находим произведение всех элементов
-            val product = poweredElementOne * poweredElementTwo * poweredElementThree
-            val geometricMean = if (product >=0) {
-                product.pow(1.0 / 3).roundTo(2)
-            } else {
-                -Math.pow(product.absoluteValue, 1.0 / 3).roundTo(2)
-            }
-            // Добавляем результат в список
-            resultList.add(geometricMean)
-        }
+        resultList.add(powerWithSign(column1Value,1.0 / 3))
+        resultList.add(powerWithSign(column2Value,1.0 / 3))
+        resultList.add(powerWithSign(column3Value,1.0 / 3))
 
         return resultList
+    }
+
+    private fun powerWithSign(element: Double, power: Double): Double {
+        return if (element >= 0) {
+            Math.pow(element, power).roundTo(2)
+        } else {
+            -Math.pow(element.absoluteValue, power).roundTo(2)
+        }
     }
 
     private fun moveLastToFront(list: MutableList<CartUiData>): MutableList<CartUiData> {

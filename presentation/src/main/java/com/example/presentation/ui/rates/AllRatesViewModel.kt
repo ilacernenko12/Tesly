@@ -1,7 +1,5 @@
 package com.example.presentation.ui.rates
 
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.usecase.GetAllRatesUseCase
@@ -16,12 +14,8 @@ import com.example.presentation.util.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -46,7 +40,7 @@ class AllRatesViewModel @Inject constructor(
 
     fun checkCacheAndRefresh() {
         viewModelScope.launch(Dispatchers.IO) {
-            val isDataAvailable = databaseUseCase.isDataAvailable()
+            val isDataAvailable = databaseUseCase.isRatesDataAvailable()
             if (isDataAvailable) {
                 refreshData()
             } else {

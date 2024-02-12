@@ -19,7 +19,9 @@ import com.example.presentation.util.gone
 import com.example.presentation.util.visible
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import getDateFromSharedPreferences
 import kotlinx.coroutines.launch
+import saveDateToSharedPreferences
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -30,8 +32,8 @@ class CurrencyCartFragment : Fragment() {
     private lateinit var binding: FragmentCurrencyCartBinding
     private val viewModel: CurrencyCartViewModel by viewModels()
     private val adapter = CurrencyCartAdapter()
-    private val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-    var date = Date()
+    private val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+    private var date = Date()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,9 +51,6 @@ class CurrencyCartFragment : Fragment() {
         // инициализируем адаптер
         initAdapter()
 
-        // при вервом запуске всегда обновляем до текущей даты
-        viewModel.updateData(Date())
-
         // подписка на UIState - обновление данных приходит сюда + обработка ошибок и загрузка
         observeUiState()
 
@@ -64,6 +63,9 @@ class CurrencyCartFragment : Fragment() {
         // чтобы во время сворачивания приложения
         // или в меню запущенных не были видны элементы активити
         (activity as? MainActivity)?.hideActivityElements()
+
+        binding.vTvDate.text = simpleDateFormat.format(requireContext().getDateFromSharedPreferences())
+        viewModel.checkCacheAndRefresh(date)
     }
 
     // при возврате на активити восстановим видимость элементов
@@ -88,12 +90,14 @@ class CurrencyCartFragment : Fragment() {
 
     private fun render(rates: List<CartUiData>) {
         visible(binding.vPbLoading)
+        gone(binding.vVgTableHeader)
         gone(binding.recyclerView)
 
         // Обновляем адаптер с полученными данными
         adapter.updateData(rates)
 
         gone(binding.vPbLoading)
+        visible(binding.vVgTableHeader)
         visible(binding.recyclerView)
     }
 
@@ -112,7 +116,7 @@ class CurrencyCartFragment : Fragment() {
         }
 
         binding.vBtnUpdate.setOnClickListener {
-            viewModel.updateData(date)
+            viewModel.loadData(date)
         }
     }
 
@@ -127,13 +131,7 @@ class CurrencyCartFragment : Fragment() {
     }
 
     private fun updateCurrentDate() {
-        binding.vTvLayoutDescription.text = getString(R.string.all_rates_description, getCurrentDate())
-        binding.vTvDate.text = getCurrentDate()
-    }
-
-    // Возвращают текущую дату в формате dd/mm/yyyy
-    private fun getCurrentDate(): String {
-        return simpleDateFormat.format(Date()).replace('/', '.')
+        binding.vTvLayoutDescription.text = getString(R.string.all_rates_description, simpleDateFormat.format(Date()))
     }
 
     private fun showDatePickerDialog() {
@@ -151,6 +149,7 @@ class CurrencyCartFragment : Fragment() {
             // Установка выбранной даты в TextView
             binding.vTvDate.text = simpleDateFormat.format(selectedDate.time).replace('/', '.')
             date = selectedDate.time
+            requireContext().saveDateToSharedPreferences(date)
         }, year, month, dayOfMonth)
 
         // Отображение DatePickerDialog

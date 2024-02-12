@@ -1,5 +1,6 @@
 package com.example.domain.usecase
 
+import com.example.domain.model.CartModel
 import com.example.domain.model.RatesStorageModel
 import com.example.domain.repository.DatabaseRepository
 import javax.inject.Inject
@@ -15,8 +16,20 @@ class GetDataFromDatabaseUseCase @Inject constructor(
         return repository.getAllRates()
     }
 
-    suspend fun isDataAvailable(): Boolean {
+    suspend fun isRatesDataAvailable(): Boolean {
         return repository.getAllRates().isNotEmpty()
+    }
+
+    suspend fun isCartDataAvailable(): Boolean {
+        return repository.getCartData().isNotEmpty()
+    }
+
+    suspend fun getCartData(): List<CartModel> {
+        return repository.getCartData()
+    }
+
+    suspend fun insertCartData(data: List<CartModel>) {
+        repository.insertCartData(data)
     }
 }
 

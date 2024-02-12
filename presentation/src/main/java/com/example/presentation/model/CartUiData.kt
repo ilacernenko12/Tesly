@@ -9,5 +9,5 @@ data class CartUiData (
     val decemberDiff: String ,
     val yesterdayDiff: String,
     val isPositiveDecemberDiff: Boolean,
-    val isPositiveYesterdayDiff: Boolean,
+    val isPositiveYesterdayDiff: Boolean
 )
