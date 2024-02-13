@@ -16,4 +16,6 @@ object Versions {
     const val viewModelKtx = "2.6.2"
     const val glide = "4.16.0"
     const val viewBindingNoReflectionGlide = "1.5.9"
+    const val lineChart = "1.0.0"
+    const val circleImageView = "3.1.0"
 }

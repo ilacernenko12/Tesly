@@ -6,14 +6,25 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.presentation.MainActivity
+import com.example.presentation.R
 import com.example.presentation.databinding.FragmentLineChartBinding
-import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.github.chartcore.common.ChartTypes
+import com.github.chartcore.common.Position
+import com.github.chartcore.common.TextAlign
+import com.github.chartcore.data.chart.ChartCoreModel
+import com.github.chartcore.data.chart.ChartData
+import com.github.chartcore.data.dataset.ChartNumberDataset
+import com.github.chartcore.data.option.ChartOptions
+import com.github.chartcore.data.option.elements.Elements
+import com.github.chartcore.data.option.elements.Line
+import com.github.chartcore.data.option.plugin.Plugin
+import com.github.chartcore.data.option.plugin.Title
+import com.github.chartcore.data.option.plugin.Tooltip
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class LineChartFragment : Fragment() {
     private lateinit var binding: FragmentLineChartBinding
 
@@ -29,38 +40,92 @@ class LineChartFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val yVals = ArrayList<Entry>()
-        yVals.add(Entry(0f, 3.33f, "0"))
-        yVals.add(Entry(1f, 3.49f, "1"))
-        yVals.add(Entry(2f, 3.543f, "2"))
-        yVals.add(Entry(3f, 3.535f, "3"))
-        yVals.add(Entry(4f, 3.536f, "4"))
-        yVals.add(Entry(5f, 3.541f, "5"))
-        yVals.add(Entry(6f, 3.546f, "6"))
+        setListeners()
 
-        val set1: LineDataSet = LineDataSet(yVals, "DataSet 1")
-        set1.color = Color.rgb(	70, 130, 180)
-        set1.setCircleColor(Color.rgb(	70, 130, 180))
-        set1.lineWidth = 1f
-        set1.circleRadius = 3f
-        set1.setDrawCircleHole(false)
-        set1.valueTextSize = 0f
-        set1.setDrawFilled(false)
+        showLineChart()
+    }
 
-        val dataSets = ArrayList<ILineDataSet>()
-        dataSets.add(set1)
-        val data = LineData(dataSets)
+    override fun onResume() {
+        super.onResume()
+        // чтобы во время сворачивания приложения
+        // или в меню запущенных не были видны элементы активити
+        (activity as? MainActivity)?.hideActivityElements()
+    }
 
-        // set data
-        binding.lineChart.data = data
-        binding.lineChart.description.isEnabled = false
-        binding.lineChart.legend.isEnabled = false
-        binding.lineChart.setPinchZoom(true)
-        binding.lineChart.xAxis.enableGridDashedLine(5f, 5f, 0f)
-        binding.lineChart.axisRight.enableGridDashedLine(5f, 5f, 0f)
-        binding.lineChart.axisLeft.enableGridDashedLine(5f, 5f, 0f)
-        //lineChart.setDrawGridBackground()
-        binding.lineChart.xAxis.labelCount = 11
-        binding.lineChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
+    // при возврате на активити восстановим видимость элементов
+    override fun onStop() {
+        super.onStop()
+        (activity as? MainActivity)?.showActivityElements()
+    }
+
+    private fun showLineChart() {
+        val data = mapOf(
+            "21.01" to 3.231,
+            "22.01" to 3.735,
+            "23.01" to 3.535,
+            "24.01" to 3.433,
+            "25.01" to 3.135,
+            "26.01" to 3.532,
+            "27.01" to 3.235
+        )
+
+        val coreData = ChartData()
+            .addDataset(
+                ChartNumberDataset()
+                    .data(data.values.toList())
+                    .label("Динамика курса USD НБ РБ")
+            )
+            .labels(data.keys.toList())
+
+        val chartOptions = ChartOptions()
+            .elements(
+                Elements()
+                    .line(
+                        Line()
+                            .tension(0.5f)
+                    )
+            )
+
+        val chartModel = ChartCoreModel()
+            .type(ChartTypes.LINE)
+            .data(coreData)
+            .options(chartOptions)
+
+        binding.chartCore.draw(chartModel)
+    }
+
+    private fun setListeners() {
+        with(binding) {
+            vBtnBack.setOnClickListener {
+                activity?.supportFragmentManager?.popBackStack()
+            }
+
+            vBtnWeek.setOnClickListener {
+                vBtnWeek.setBackgroundResource(R.drawable.round_button_shape)
+                vBtnWeek.setTextColor(resources.getColor(R.color.white))
+                vBtnMonth.setBackgroundResource(R.drawable.chart_button_border)
+                vBtnMonth.setTextColor(resources.getColor(R.color.black))
+                vBtnQuarter.setBackgroundResource(R.drawable.chart_button_border)
+                vBtnQuarter.setTextColor(resources.getColor(R.color.black))
+            }
+
+            vBtnMonth.setOnClickListener {
+                vBtnMonth.setBackgroundResource(R.drawable.round_button_shape)
+                vBtnMonth.setTextColor(resources.getColor(R.color.white))
+                vBtnWeek.setBackgroundResource(R.drawable.chart_button_border)
+                vBtnWeek.setTextColor(resources.getColor(R.color.black))
+                vBtnQuarter.setBackgroundResource(R.drawable.chart_button_border)
+                vBtnQuarter.setTextColor(resources.getColor(R.color.black))
+            }
+
+            vBtnQuarter.setOnClickListener {
+                vBtnQuarter.setBackgroundResource(R.drawable.round_button_shape)
+                vBtnQuarter.setTextColor(resources.getColor(R.color.white))
+                vBtnMonth.setBackgroundResource(R.drawable.chart_button_border)
+                vBtnMonth.setTextColor(resources.getColor(R.color.black))
+                vBtnWeek.setBackgroundResource(R.drawable.chart_button_border)
+                vBtnWeek.setTextColor(resources.getColor(R.color.black))
+            }
+        }
     }
 }

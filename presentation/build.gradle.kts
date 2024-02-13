@@ -59,5 +59,6 @@ dependencies {
     implementation(Libraries.viewBindingNoReflection)
 
     implementation(Libraries.glide)
-    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation(Libraries.lineChart)
+    implementation(Libraries.circleImageView)
 }

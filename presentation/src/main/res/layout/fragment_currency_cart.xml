@@ -121,7 +121,7 @@
             android:background="#7B1E3C"
             android:gravity="center"
             android:padding="10dp"
-            android:text="Курс белорусского рубля"
+            android:text="@string/byn_rate"
             android:textColor="@color/white"
             android:textSize="10sp" />
 
@@ -134,7 +134,7 @@
             android:gravity="center"
             android:minWidth="60dp"
             android:padding="10dp"
-            android:text="Официальный курс"
+            android:text="@string/official_rate"
             android:textColor="@color/white"
             android:textSize="10sp" />
 
@@ -147,7 +147,7 @@
             android:minWidth="60dp"
             android:background="#7B1E3C"
             android:padding="10dp"
-            android:text="Изменения к 31 декабря 2023, процентов"
+            android:text="@string/december_changes"
             android:textColor="@color/white"
             android:textSize="10sp" />
 
@@ -160,7 +160,7 @@
             android:minWidth="60dp"
             android:background="#7B1E3C"
             android:padding="10dp"
-            android:text="Изменения к предыдущему дню установления курсов, процентов"
+            android:text="@string/yesterday_changes"
             android:textColor="@color/white"
             android:textSize="10sp" />
 

@@ -4,4 +4,25 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="currency_cart_desc">Стоимость корзины валют рассчитывается как среднее геометрическое взвешенное двусторонних курсов белорусского рубля к российскому рублю(RUB), доллару США(USD), китайскому юаню(CNY) за 1 единицу иностранной валюты с весами 0.6, 0.3, 0.1 соответсвенно, т.е. стоимость корзины валют рассчитывается как произведение значений курсов белорусского рубля к российскому рублю в степени 0.6, к доллару США в степени 0.3 и к китайскому юаню в степени 0.1</string>
+    <string name="chart_header">КУРС USD НБРБ</string>
+    <string name="currency_name">USD</string>
+    <string name="chart_when">На сегодня</string>
+    <string name="current_rate">2.5782</string>
+    <string name="sales">Торги БВФБ</string>
+    <string name="sales_value">2.5807</string>
+    <string name="edit">Изм.</string>
+    <string name="edit_value">0.0025</string>
+    <string name="update">Обн.</string>
+    <string name="datetime">21.01 10:49</string>
+    <string name="week">Неделя</string>
+    <string name="month">Месяц</string>
+    <string name="quarter">Квартал</string>
+    <string name="byn_rate">Курс белорусского рубля</string>
+    <string name="official_rate">Официальный курс</string>
+    <string name="december_changes">Изменения к 31 декабря 2023, процентов</string>
+    <string name="yesterday_changes">Изменения к предыдущему дню установления курсов, процентов</string>
+    <string name="main_header">Курсы валют</string>
+    <string name="btn_currency">Курсы BYN</string>
+    <string name="btn_cart">Корзина валют</string>
+    <string name="btn_chart">График</string>
 </resources>

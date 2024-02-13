@@ -13,7 +13,7 @@ class GetAllRatesUseCase @Inject constructor(
         return repository.getCurrentRates()
     }
 
-    private suspend fun getRatesByDay(date: String): Flow<List<RateModel>> {
+    suspend fun getRatesByDay(date: String): Flow<List<RateModel>> {
         return repository.getRatesByDay(date)
     }
 

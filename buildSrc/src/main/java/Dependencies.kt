@@ -43,6 +43,12 @@ object Libraries {
 
     // viewBinding delegate
     const val viewBindingNoReflection = "com.github.kirich1409:viewbindingpropertydelegate-noreflection:${Versions.viewBindingNoReflectionGlide}"
+
+    // line chart
+    const val lineChart = "com.github.ErenAlpaslan:ChartCore:${Versions.lineChart}"
+
+    // circle image view
+    const val circleImageView = "de.hdodenhof:circleimageview:${Versions.circleImageView}"
 }
 
 object Modules {

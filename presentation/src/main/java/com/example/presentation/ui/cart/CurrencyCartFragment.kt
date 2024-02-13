@@ -16,6 +16,7 @@ import com.example.presentation.databinding.FragmentCurrencyCartBinding
 import com.example.presentation.model.CartUiData
 import com.example.presentation.util.UIState
 import com.example.presentation.util.gone
+import com.example.presentation.util.setOnSafeClickListener
 import com.example.presentation.util.visible
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -64,7 +65,8 @@ class CurrencyCartFragment : Fragment() {
         // или в меню запущенных не были видны элементы активити
         (activity as? MainActivity)?.hideActivityElements()
 
-        binding.vTvDate.text = simpleDateFormat.format(requireContext().getDateFromSharedPreferences())
+        binding.vTvDate.text =
+            simpleDateFormat.format(requireContext().getDateFromSharedPreferences())
         viewModel.checkCacheAndRefresh(date)
     }
 
@@ -107,16 +109,18 @@ class CurrencyCartFragment : Fragment() {
     }
 
     private fun setListeners() {
-        binding.vBtnBack.setOnClickListener {
-            activity?.supportFragmentManager?.popBackStack()
-        }
+        with(binding) {
+            vBtnBack.setOnClickListener {
+                activity?.supportFragmentManager?.popBackStack()
+            }
 
-        binding.vVgCalendarLayout.setOnClickListener {
-            showDatePickerDialog()
-        }
+            vVgCalendarLayout.setOnClickListener {
+                showDatePickerDialog()
+            }
 
-        binding.vBtnUpdate.setOnClickListener {
-            viewModel.loadData(date)
+            vBtnUpdate.setOnSafeClickListener {
+                viewModel.loadData(date)
+            }
         }
     }
 
@@ -127,11 +131,17 @@ class CurrencyCartFragment : Fragment() {
     }
 
     private fun showError() {
-        Snackbar.make(requireContext(), binding.fragmentCurrencyCart, "Ошибка запроса", Snackbar.LENGTH_LONG).show()
+        Snackbar.make(
+            requireContext(),
+            binding.fragmentCurrencyCart,
+            "Ошибка запроса",
+            Snackbar.LENGTH_LONG
+        ).show()
     }
 
     private fun updateCurrentDate() {
-        binding.vTvLayoutDescription.text = getString(R.string.all_rates_description, simpleDateFormat.format(Date()))
+        binding.vTvLayoutDescription.text =
+            getString(R.string.all_rates_description, simpleDateFormat.format(Date()))
     }
 
     private fun showDatePickerDialog() {
@@ -142,15 +152,21 @@ class CurrencyCartFragment : Fragment() {
         val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
 
         // Создание DatePickerDialog
-        val datePickerDialog = DatePickerDialog(requireContext(), { _: DatePicker, selectedYear: Int, selectedMonth: Int, dayOfMonth: Int ->
-            // Формирование выбранной даты
-            val selectedDate = Calendar.getInstance()
-            selectedDate.set(selectedYear, selectedMonth, dayOfMonth)
-            // Установка выбранной даты в TextView
-            binding.vTvDate.text = simpleDateFormat.format(selectedDate.time).replace('/', '.')
-            date = selectedDate.time
-            requireContext().saveDateToSharedPreferences(date)
-        }, year, month, dayOfMonth)
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            { _: DatePicker, selectedYear: Int, selectedMonth: Int, dayOfMonth: Int ->
+                // Формирование выбранной даты
+                val selectedDate = Calendar.getInstance()
+                selectedDate.set(selectedYear, selectedMonth, dayOfMonth)
+                // Установка выбранной даты в TextView
+                binding.vTvDate.text = simpleDateFormat.format(selectedDate.time).replace('/', '.')
+                date = selectedDate.time
+                requireContext().saveDateToSharedPreferences(date)
+            },
+            year,
+            month,
+            dayOfMonth
+        )
 
         // Отображение DatePickerDialog
         datePickerDialog.show()

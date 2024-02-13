@@ -71,15 +71,17 @@ class AllRatesFragment : Fragment() {
     }
 
     private fun setListeners() {
-        // для возвращения на активити
-        binding.vBtnBack.setOnClickListener {
-            activity?.supportFragmentManager?.popBackStack()
-        }
+        with(binding) {
+            // для возвращения на активити
+            vBtnBack.setOnClickListener {
+                activity?.supportFragmentManager?.popBackStack()
+            }
 
-        // Устанавливаем слушатель кликов на кнопку
-        binding.vBtnUpdate.setOnSafeClickListener {
-            updateCurrentDate()
-            viewModel.checkCacheAndRefresh()
+            // Устанавливаем слушатель кликов на кнопку
+            vBtnUpdate.setOnSafeClickListener {
+                updateCurrentDate()
+                viewModel.checkCacheAndRefresh()
+            }
         }
     }
     private fun initAdapter() {
