@@ -34,8 +34,13 @@ class LineChartViewModel(
                 // Получаем копию текущей даты
                 val date = calendar.time
 
-                // Отправляем запрос с текущей датой
-                rateUseCase.getRatesByDay(formatDateToString(date))
+                rateUseCase.getRatesByDay(formatDateToString(date)).collect { ratesList ->
+                    val filteredRates = ratesList.filter { it.abbreviation == "USD" }
+                    filteredRates.forEach { rate ->
+                        // Добавляем данные в мапу
+                        map[formatDateForMap(date).substring(0,4).replace('/', '.')] = rate.officialRate
+                    }
+                }
 
                 // Уменьшаем дату на одну неделю
                 calendar.add(Calendar.WEEK_OF_YEAR, -1)
@@ -45,6 +50,11 @@ class LineChartViewModel(
 
     private fun formatDateToString(date: Date): String {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return dateFormat.format(date)
+    }
+
+    private fun formatDateForMap(date: Date): String {
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
         return dateFormat.format(date)
     }
 }
