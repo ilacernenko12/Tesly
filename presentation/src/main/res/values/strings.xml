@@ -7,13 +7,13 @@
     <string name="chart_header">КУРС USD НБРБ</string>
     <string name="currency_name">USD</string>
     <string name="chart_when">На сегодня</string>
-    <string name="current_rate">2.5782</string>
+    <string name="current_rate">Загрузка</string>
     <string name="sales">Торги БВФБ</string>
-    <string name="sales_value">2.5807</string>
+    <string name="sales_value">Загрузка</string>
     <string name="edit">Изм.</string>
     <string name="edit_value">0.0025</string>
     <string name="update">Обн.</string>
-    <string name="datetime">21.01 10:49</string>
+    <string name="datetime">Загрузка</string>
     <string name="week">Неделя</string>
     <string name="month">Месяц</string>
     <string name="quarter">Квартал</string>

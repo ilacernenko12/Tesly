@@ -13,3 +13,11 @@ fun <T> MutableList<T>.moveLastToFront() {
         this.add(0, lastElement)
     }
 }
+
+fun <K, V> Map<K, V>.reverseEntries(): Map<K, V> {
+    val reversedMap = LinkedHashMap<K, V>()
+    this.entries.reversed().forEach { (key, value) ->
+        reversedMap[key] = value
+    }
+    return reversedMap
+}

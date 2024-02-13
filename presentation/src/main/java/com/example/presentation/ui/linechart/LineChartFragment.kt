@@ -1,33 +1,34 @@
 package com.example.presentation.ui.linechart
 
-import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.presentation.MainActivity
 import com.example.presentation.R
 import com.example.presentation.databinding.FragmentLineChartBinding
+import com.example.presentation.util.UIState
+import com.example.presentation.util.gone
+import com.example.presentation.util.visible
 import com.github.chartcore.common.ChartTypes
-import com.github.chartcore.common.Position
-import com.github.chartcore.common.TextAlign
 import com.github.chartcore.data.chart.ChartCoreModel
 import com.github.chartcore.data.chart.ChartData
 import com.github.chartcore.data.dataset.ChartNumberDataset
 import com.github.chartcore.data.option.ChartOptions
 import com.github.chartcore.data.option.elements.Elements
 import com.github.chartcore.data.option.elements.Line
-import com.github.chartcore.data.option.plugin.Plugin
-import com.github.chartcore.data.option.plugin.Title
-import com.github.chartcore.data.option.plugin.Tooltip
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
 class LineChartFragment : Fragment() {
     private lateinit var binding: FragmentLineChartBinding
-
+    private val viewModel: LineChartViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,7 +43,7 @@ class LineChartFragment : Fragment() {
 
         setListeners()
 
-        showLineChart()
+        observeUiState()
     }
 
     override fun onResume() {
@@ -58,16 +59,22 @@ class LineChartFragment : Fragment() {
         (activity as? MainActivity)?.showActivityElements()
     }
 
-    private fun showLineChart() {
-        val data = mapOf(
-            "21.01" to 3.231,
-            "22.01" to 3.735,
-            "23.01" to 3.535,
-            "24.01" to 3.433,
-            "25.01" to 3.135,
-            "26.01" to 3.532,
-            "27.01" to 3.235
-        )
+    private fun observeUiState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.uiState.collect { state ->
+                when (state) {
+                    is UIState.Loading -> showLoading()
+                    is UIState.Success -> showLineChart(state.rates as Map<String, Double>)
+                    is UIState.Error -> showError()
+                    else -> {}
+                }
+            }
+        }
+    }
+
+    private fun showLineChart(data: Map<String, Double>) {
+        gone(binding.vPbLoading)
+        updateHeader(data)
 
         val coreData = ChartData()
             .addDataset(
@@ -94,6 +101,13 @@ class LineChartFragment : Fragment() {
         binding.chartCore.draw(chartModel)
     }
 
+    private fun updateHeader(data: Map<String, Double>) {
+        with(binding) {
+            vTvCurrentRate.text = data.values.last().toString()
+            vTvDateTime.text = data.keys.last()
+            vTvSalesCurrency.text = data.values.last().toString()
+        }
+    }
     private fun setListeners() {
         with(binding) {
             vBtnBack.setOnClickListener {
@@ -127,5 +141,18 @@ class LineChartFragment : Fragment() {
                 vBtnWeek.setTextColor(resources.getColor(R.color.black))
             }
         }
+    }
+
+    private fun showLoading() {
+        visible(binding.vPbLoading)
+    }
+
+    private fun showError() {
+        Snackbar.make(
+            requireContext(),
+            binding.fragmentLineChartBinding,
+            "Ошибка запроса",
+            Snackbar.LENGTH_LONG
+        ).show()
     }
 }
