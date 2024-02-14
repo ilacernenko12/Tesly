@@ -6,42 +6,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.presentation.MainActivity
 import com.example.presentation.R
 import com.example.presentation.databinding.FragmentCurrencyCartBinding
 import com.example.presentation.model.CartUiData
+import com.example.presentation.ui.base.BaseFragment
 import com.example.presentation.util.UIState
 import com.example.presentation.util.dateStringStartOfDay
 import com.example.presentation.util.gone
 import com.example.presentation.util.setOnSafeClickListener
 import com.example.presentation.util.visible
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import getDateFromSharedPreferences
 import kotlinx.coroutines.launch
 import saveDateToSharedPreferences
-import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
-import java.util.Locale
 
 @AndroidEntryPoint
-class CurrencyCartFragment : Fragment() {
-    private lateinit var binding: FragmentCurrencyCartBinding
+class CurrencyCartFragment : BaseFragment<FragmentCurrencyCartBinding>() {
+
     private val viewModel: CurrencyCartViewModel by viewModels()
     private val adapter = CurrencyCartAdapter()
     private var date = Date()
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentCurrencyCartBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -61,19 +50,9 @@ class CurrencyCartFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        // чтобы во время сворачивания приложения
-        // или в меню запущенных не были видны элементы активити
-        (activity as? MainActivity)?.hideActivityElements()
-
         binding.vTvDate.text =
             dateStringStartOfDay(requireContext().getDateFromSharedPreferences())
         viewModel.checkCacheAndRefresh(date)
-    }
-
-    // при возврате на активити восстановим видимость элементов
-    override fun onStop() {
-        super.onStop()
-        (activity as? MainActivity)?.showActivityElements()
     }
 
     // обновляем UI исходя из state запроса в сеть/БД
@@ -103,11 +82,6 @@ class CurrencyCartFragment : Fragment() {
         visible(binding.recyclerView)
     }
 
-    private fun showLoading() {
-        visible(binding.vPbLoading)
-        gone(binding.recyclerView)
-    }
-
     private fun setListeners() {
         with(binding) {
             vBtnBack.setOnClickListener {
@@ -128,15 +102,6 @@ class CurrencyCartFragment : Fragment() {
         // Устанавливаем LayoutManager и адаптер для RecyclerView
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
-    }
-
-    private fun showError() {
-        Snackbar.make(
-            requireContext(),
-            binding.fragmentCurrencyCart,
-            "Ошибка запроса",
-            Snackbar.LENGTH_LONG
-        ).show()
     }
 
     private fun updateCurrentDate() {
@@ -171,4 +136,16 @@ class CurrencyCartFragment : Fragment() {
         // Отображение DatePickerDialog
         datePickerDialog.show()
     }
+
+    override fun inflateBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentCurrencyCartBinding =
+        FragmentCurrencyCartBinding.inflate(inflater, container, false)
+
+    override fun getErrorView(): View = binding.fragmentCurrencyCart
+
+    override fun getLoadingView(): View = binding.vPbLoading
+
+    override fun getRecyclerView(): View = binding.recyclerView
 }

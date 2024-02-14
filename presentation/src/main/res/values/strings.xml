@@ -25,4 +25,5 @@
     <string name="btn_currency">Курсы BYN</string>
     <string name="btn_cart">Корзина валют</string>
     <string name="btn_chart">График</string>
+    <string name="something_went_wrong">Ошибка запроса</string>
 </resources>

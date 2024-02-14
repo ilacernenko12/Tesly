@@ -41,5 +41,5 @@ fun dateStringStartOfYear(format: Date): String {
 }
 
 fun dateStringStartOfDay(format: Date): String {
-    return ddMMyyyy.format(format)
+    return ddMMyyyy.format(format).replace('-','.')
 }
