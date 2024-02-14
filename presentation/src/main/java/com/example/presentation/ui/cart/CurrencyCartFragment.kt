@@ -15,6 +15,7 @@ import com.example.presentation.R
 import com.example.presentation.databinding.FragmentCurrencyCartBinding
 import com.example.presentation.model.CartUiData
 import com.example.presentation.util.UIState
+import com.example.presentation.util.dateStringStartOfDay
 import com.example.presentation.util.gone
 import com.example.presentation.util.setOnSafeClickListener
 import com.example.presentation.util.visible
@@ -33,7 +34,6 @@ class CurrencyCartFragment : Fragment() {
     private lateinit var binding: FragmentCurrencyCartBinding
     private val viewModel: CurrencyCartViewModel by viewModels()
     private val adapter = CurrencyCartAdapter()
-    private val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
     private var date = Date()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,7 +66,7 @@ class CurrencyCartFragment : Fragment() {
         (activity as? MainActivity)?.hideActivityElements()
 
         binding.vTvDate.text =
-            simpleDateFormat.format(requireContext().getDateFromSharedPreferences())
+            dateStringStartOfDay(requireContext().getDateFromSharedPreferences())
         viewModel.checkCacheAndRefresh(date)
     }
 
@@ -141,7 +141,7 @@ class CurrencyCartFragment : Fragment() {
 
     private fun updateCurrentDate() {
         binding.vTvLayoutDescription.text =
-            getString(R.string.all_rates_description, simpleDateFormat.format(Date()))
+            getString(R.string.all_rates_description, dateStringStartOfDay(Date()))
     }
 
     private fun showDatePickerDialog() {
@@ -159,7 +159,7 @@ class CurrencyCartFragment : Fragment() {
                 val selectedDate = Calendar.getInstance()
                 selectedDate.set(selectedYear, selectedMonth, dayOfMonth)
                 // Установка выбранной даты в TextView
-                binding.vTvDate.text = simpleDateFormat.format(selectedDate.time).replace('/', '.')
+                binding.vTvDate.text = dateStringStartOfDay(selectedDate.time).replace('/', '.')
                 date = selectedDate.time
                 requireContext().saveDateToSharedPreferences(date)
             },

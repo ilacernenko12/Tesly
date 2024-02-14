@@ -4,16 +4,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.usecase.GetAllRatesUseCase
 import com.example.presentation.util.UIState
+import com.example.presentation.util.dateStringStartOfDay
+import com.example.presentation.util.dateStringStartOfYear
 import com.example.presentation.util.reverseEntries
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
-import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -43,10 +43,10 @@ class LineChartViewModel @Inject constructor(
                 for (i in 1..7) {
                     val date = calendar.time
 
-                    rateUseCase.getRatesByDay(formatDateToString(date)).collect { ratesList ->
+                    rateUseCase.getRatesByDay(dateStringStartOfYear(date)).collect { ratesList ->
                         val filteredRates = ratesList.filter { it.abbreviation == "USD" }
                         filteredRates.forEach { rate ->
-                            map[formatDateForMap(date).substring(0, 5).replace('-', '.')] =
+                            map[dateStringStartOfDay(date).substring(0, 5).replace('-', '.')] =
                                 rate.officialRate
                         }
                     }
@@ -58,17 +58,6 @@ class LineChartViewModel @Inject constructor(
                 // В случае возникновения ошибки устанавливаем состояние ошибки
                 _uiState.value = UIState.Error
             }
-
         }
-    }
-
-    private fun formatDateToString(date: Date): String {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        return dateFormat.format(date)
-    }
-
-    private fun formatDateForMap(date: Date): String {
-        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-        return dateFormat.format(date)
     }
 }

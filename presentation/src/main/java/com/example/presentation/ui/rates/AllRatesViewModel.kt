@@ -11,6 +11,7 @@ import com.example.presentation.mapper.TableUiMapper
 import com.example.presentation.model.FlagUIModel
 import com.example.presentation.model.TableUIData
 import com.example.presentation.util.UIState
+import com.example.presentation.util.previousDateAsString
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -19,6 +20,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
 
@@ -35,8 +37,6 @@ class AllRatesViewModel @Inject constructor(
     // флоу используемый для обновления данных на UI
     private val _uiState = MutableStateFlow<UIState>(UIState.Loading)
     val uiState: StateFlow<UIState> = _uiState
-
-    private val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
 
     fun checkCacheAndRefresh() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -74,7 +74,7 @@ class AllRatesViewModel @Inject constructor(
                 val currentRatesDeferred = async { rateUseCase.getCurrentRates() }
                 // Получаем разницу курсов валют за предыдущий день асинхронно
                 val differenceRatesDeferred =
-                    async { rateUseCase.getRateDifferences(getYesterdayDate()) }
+                    async { rateUseCase.getRateDifferences(Date().previousDateAsString()) }
 
                 // Ожидаем завершения получения текущих курсов
                 val currentRates = currentRatesDeferred.await()
@@ -137,11 +137,5 @@ class AllRatesViewModel @Inject constructor(
             }
             databaseUseCase.insertRatesData(models)
         }
-    }
-    // Дата вчерашнего дня
-    private fun getYesterdayDate(): String {
-        val calendar = Calendar.getInstance()
-        calendar.add(Calendar.DAY_OF_YEAR, -1)
-        return simpleDateFormat.format(calendar.time)
     }
 }

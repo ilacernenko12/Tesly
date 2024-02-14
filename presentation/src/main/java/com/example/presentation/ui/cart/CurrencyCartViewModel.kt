@@ -7,6 +7,8 @@ import com.example.domain.usecase.GetDataFromDatabaseUseCase
 import com.example.presentation.mapper.CartUiMapper
 import com.example.presentation.model.CartUiData
 import com.example.presentation.util.UIState
+import com.example.presentation.util.dateStringStartOfYear
+import com.example.presentation.util.previousDateAsString
 import com.example.presentation.util.roundTo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -14,10 +16,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.Calendar
 import java.util.Date
-import java.util.Locale
 import javax.inject.Inject
 import kotlin.math.absoluteValue
 
@@ -31,8 +30,6 @@ class CurrencyCartViewModel @Inject constructor(
     // флоу используемый для обновления данных на UI
     private val _uiState = MutableStateFlow<UIState>(UIState.Loading)
     val uiState: StateFlow<UIState> = _uiState
-
-    private val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
 
     companion object {
         const val DECEMBER_RATES = "2023/12/31"
@@ -59,14 +56,14 @@ class CurrencyCartViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val currentRatesDeferred =
-                    async { repository.getRatesByDay(simpleDateFormat.format(date)) }
+                    async { repository.getRatesByDay(dateStringStartOfYear(date)) }
                 val currentRates = currentRatesDeferred.await()
 
                 val decemberRatesDeferred = async { repository.getRatesByDay(DECEMBER_RATES) }
                 val decemberRates = decemberRatesDeferred.await()
 
                 val yesterdayRatesDeferred =
-                    async { repository.getRatesByDay(getPreviousDate(date)) }
+                    async { repository.getRatesByDay(date.previousDateAsString()) }
                 val yesterdayRates = yesterdayRatesDeferred.await()
 
                 val uiData = mutableListOf<CartUiData>()
@@ -201,12 +198,5 @@ class CurrencyCartViewModel @Inject constructor(
         // Добавляем его в начало списка
         list.add(0, lastElement)
         return list
-    }
-
-    private fun getPreviousDate(date: Date): String {
-        val calendar = Calendar.getInstance()
-        calendar.time = date
-        calendar.add(Calendar.DAY_OF_MONTH, -1) // вычитаем один день
-        return simpleDateFormat.format(calendar.time)
     }
 }

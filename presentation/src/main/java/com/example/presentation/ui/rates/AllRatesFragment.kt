@@ -13,6 +13,7 @@ import com.example.presentation.R
 import com.example.presentation.databinding.FragmentAllRatesBinding
 import com.example.presentation.model.TableUIData
 import com.example.presentation.util.UIState
+import com.example.presentation.util.dateStringStartOfDay
 import com.example.presentation.util.gone
 import com.example.presentation.util.setOnSafeClickListener
 import com.example.presentation.util.visible
@@ -28,7 +29,6 @@ class AllRatesFragment : Fragment() {
     private lateinit var binding: FragmentAllRatesBinding
     private val viewModel: AllRatesViewModel by viewModels()
     private val adapter = AllRatesAdapter()
-    private val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -127,6 +127,6 @@ class AllRatesFragment : Fragment() {
 
     // Функция обновления даты
     private fun updateCurrentDate() {
-        binding.vTvLayoutDescription.text = getString(R.string.all_rates_description, simpleDateFormat.format(Date()))
+        binding.vTvLayoutDescription.text = getString(R.string.all_rates_description, dateStringStartOfDay(Date()))
     }
 }
